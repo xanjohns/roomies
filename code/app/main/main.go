@@ -1,7 +1,6 @@
 package main
 
 import (
-
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/app"
 	"fyne.io/fyne/v2/container"
@@ -19,13 +18,17 @@ func main() {
 
 	feed := NewFeed()
 
-	tabs := container.NewAppTabs(
-		container.NewTabItem("Feed", container.NewVScroll(
-			feed.feedItems)),
+	// tabs := container.NewAppTabs(
+	// 	container.NewTabItem("Feed", container.NewVScroll(
+	// 		feed.feedItems)),
 
-		// container.NewTabItem("Apps", scrollPadded),
-		container.NewTabItem("People", widget.NewLabel("Peoples")),
-	)
+	// 	// container.NewTabItem("Apps", scrollPadded),
+	// 	container.NewTabItem("People", widget.NewLabel("Peoples")),
+	// )
+
+	mainView := container.NewVBox()
+
+	appsView := NewAppsView(w)
 
 	toolbar := widget.NewToolbar(
 		widget.NewToolbarAction(theme.ViewRefreshIcon(), func() {
@@ -33,11 +36,27 @@ func main() {
 		}),
 	)
 
-	tabs.SetTabLocation(container.TabLocationBottom)
-	tabs.Resize(fyne.NewSize(60, 300))
-	content := container.NewBorder(toolbar, nil, nil, nil, tabs)
+	tabs := container.NewHBox(
+		widget.NewButton("Feed", func() {}),
+		widget.NewButton("Apps", func() {
+			mainView.Objects = appsView.apps
+			mainView.Refresh()
+		}),
+		widget.NewButton("People", func() {}),
+	)
+
+	centerTabs := container.NewCenter(tabs)
+
+	content := container.NewBorder(toolbar, centerTabs, nil, nil, mainView)
 
 	w.SetContent(content)
 	w.ShowAndRun()
+
+}
+
+func setView(w fyne.Window, top fyne.CanvasObject, bottom fyne.CanvasObject, mid fyne.CanvasObject) {
+	content := container.NewBorder(top, bottom, nil, nil, mid)
+	w.SetContent(content)
+	w.Show()
 
 }

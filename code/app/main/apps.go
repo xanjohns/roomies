@@ -4,7 +4,6 @@ import (
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/layout"
-	"fyne.io/fyne/v2/widget"
 )
 
 type Apps struct {
@@ -16,7 +15,7 @@ func NewApps() *Apps {
 	myApps.appItems = container.NewVBox()
 
 	// Default apps
-	myApps.AddItem(widget.NewButton(""))
+	// myApps.AddItem(widget.NewButton(""))
 
 	return myApps
 }

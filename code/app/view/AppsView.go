@@ -16,7 +16,7 @@ type AppsView struct {
 
 func NewAppsView(mainController *util.MainController) *AppsView {
 	appsView := new(AppsView)
-	appsView.AddApp(NewGroceryView())
+	appsView.AddApp(NewGroceryView(mainController))
 	appsView.mainController = mainController
 	appsView.canvasObject = widget.NewLabel("AppsView")
 	return appsView

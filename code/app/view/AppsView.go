@@ -1,6 +1,7 @@
 package view
 
 import (
+	"roomies/code/app/model"
 	"roomies/code/app/util"
 
 	"fyne.io/fyne/v2"
@@ -16,7 +17,7 @@ type AppsView struct {
 
 func NewAppsView(mainController *util.MainController) *AppsView {
 	appsView := new(AppsView)
-	appsView.AddApp(NewGroceryView(mainController))
+	appsView.AddApp(NewGroceryView(mainController, model.NewGroceryModel()))
 	appsView.mainController = mainController
 	appsView.canvasObject = widget.NewLabel("AppsView")
 	return appsView

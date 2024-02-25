@@ -36,14 +36,14 @@ func (this *MainController) ShowAndRun() {
 func (this *MainController) SwitchToView(roomiesView RoomiesView) {
 	if roomiesView != nil {
 		roomiesView.RefreshContent()
-		newContent := this.CreateBorder(roomiesView.GetCanvasObject())
+		newContent := this.CreateBorder(roomiesView)
 		this.Window.SetContent(newContent)
 	}
 }
 
-func (this *MainController) CreateBorder(centerView fyne.CanvasObject) *fyne.Container {
+func (this *MainController) CreateBorder(centerView RoomiesView) *fyne.Container {
 	toolbar := widget.NewToolbar(
-		widget.NewToolbarAction(theme.ViewRefreshIcon(), func() {}),
+		widget.NewToolbarAction(theme.ViewRefreshIcon(), func() {centerView.RefreshContent()}),
 	)
 
 	tabs := container.NewHBox(
@@ -60,6 +60,6 @@ func (this *MainController) CreateBorder(centerView fyne.CanvasObject) *fyne.Con
 
 	centerTabs := container.NewCenter(tabs)
 
-	return container.NewBorder(toolbar, centerTabs, nil, nil, centerView)
+	return container.NewBorder(toolbar, centerTabs, nil, nil, centerView.GetCanvasObject())
 
 }

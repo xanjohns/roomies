@@ -12,6 +12,7 @@ func main() {
 	mainController.FeedView = view.NewFeedView()
 	mainController.PeopleView = view.NewPeopleView()
 
+
 	mainController.SwitchToView(mainController.AppView)
 	mainController.ShowAndRun()
 

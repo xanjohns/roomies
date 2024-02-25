@@ -2,6 +2,7 @@ package view
 
 import (
 	"roomies/code/app/util"
+	"roomies/code/app/model"
 
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/container"
@@ -14,42 +15,29 @@ type GroceryView struct {
 	canvasObject   *fyne.Container
 	groceryItems   map[string]fyne.CanvasObject
 	mainController *util.MainController
+	GroceryModel model.GroceryModel
 }
 
-func NewGroceryView(mainController *util.MainController) *GroceryView {
+func NewGroceryView(mainController *util.MainController, groceryModel *model.GroceryModel) *GroceryView {
 	appsView := new(GroceryView)
+	appsView.GroceryModel = *groceryModel
 	appsView.canvasObject = container.NewVBox()
-	appsView.canvasObject.Add(widget.NewButtonWithIcon("", theme.ContentAddIcon(), func() {
-
-		// Create a form to get user input
-		inputEntry := widget.NewEntry()
-		form := &widget.Form{
-			Items: []*widget.FormItem{
-				{Text: "Enter a string", Widget: inputEntry},
-			},
-			OnSubmit: func() {
-				// Callback function called when the user submits the form
-				// Here you can handle the input provided by the user
-				println("Entered string:", inputEntry.Text)
-				appsView.AddItem(inputEntry.Text)
-			},
-		}
-
-		// Create a dialog box with the form
-		dialog := dialog.NewCustom("String Input Dialog", "OK", form, mainController.Window)
-
-		// Show the dialog box
-		dialog.Show()
-
-		// appsView.AddItem("Food")
-		appsView.RefreshContent()
-	}))
+	appsView.canvasObject.Add(appsView.NewAddButton())
 	appsView.groceryItems = map[string]fyne.CanvasObject{}
 	return appsView
 }
 
 func (this *GroceryView) RefreshContent() {
-	// newCanvasObject := container.NewVBox()
+	this.canvasObject.RemoveAll()
+	for k := range this.groceryItems {
+		delete(this.groceryItems, k)
+	}
+	
+	this.canvasObject.Add(this.NewAddButton())
+	newItems := this.GroceryModel.GetItemsHTTP()
+	for _, item := range newItems {
+		this.AddItem(item)
+	}
 
 }
 
@@ -72,4 +60,33 @@ func (this *GroceryView) AddItem(item string) {
 
 		this.canvasObject.Add(this.groceryItems[item])
 	}
+}
+
+func (this *GroceryView) NewAddButton() fyne.CanvasObject {
+	newWidget := widget.NewButtonWithIcon("", theme.ContentAddIcon(), func() {
+
+		// Create a form to get user input
+		inputEntry := widget.NewEntry()
+		form := &widget.Form{
+			Items: []*widget.FormItem{
+				{Text: "Enter a string", Widget: inputEntry},
+			},
+			OnSubmit: func() {
+				// Callback function called when the user submits the form
+				// Here you can handle the input provided by the user
+				println("Entered string:", inputEntry.Text)
+				this.AddItem(inputEntry.Text)
+			},
+		}
+
+		// Create a dialog box with the form
+		dialog := dialog.NewCustom("String Input Dialog", "OK", form, this.mainController.Window)
+
+		// Show the dialog box
+		dialog.Show()
+
+		// appsView.AddItem("Food")
+		this.RefreshContent()
+	})
+	return newWidget
 }

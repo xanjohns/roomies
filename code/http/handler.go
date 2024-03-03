@@ -15,6 +15,10 @@ func (h HttpHandler) ServeHTTP(response http.ResponseWriter, request *http.Reque
 
 func SetupRouter() http.Handler {
 	router := http.NewServeMux()
+	//list := endpoints.NewGroceryList()
 	router.Handle("/grocery-list", HttpHandler{endpoint: &endpoints.GroceryList{}})
+	router.Handle("/grocery-list/shared/group1", HttpHandler{endpoint: &endpoints.GroceryList{}})
+	router.Handle("/grocery-list/private", HttpHandler{endpoint: &endpoints.GroceryList{}})
+
 	return router
 }

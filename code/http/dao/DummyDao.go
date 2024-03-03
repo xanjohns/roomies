@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"roomies/code/http/endpoints"
 	"roomies/code/shared"
+	"time"
 )
 
 type DummyGroceryListDAO struct {
@@ -11,8 +12,50 @@ type DummyGroceryListDAO struct {
 	dummyList *shared.GroceryList
 }
 
+func NewDummyGroceryListDAO() *DummyGroceryListDAO {
+	return &DummyGroceryListDAO{
+		GroceryListDAO: nil,
+		dummyList:      nil,
+	}
+}
+
 func (d *DummyGroceryListDAO) GetList(listID string) *shared.GroceryList {
 	return d.dummyList
+}
+
+func (d *DummyGroceryListDAO) GetListItems() []*shared.GroceryListItem {
+	items := d.dummyList.GetItems()
+
+	if items == nil {
+		items = []*shared.GroceryListItem{
+			{
+				ItemID:        "1111",
+				GroupID:       "group1",
+				ListItem:      "eggs",
+				AddedByID:     "user",
+				Recurring:     false,
+				RecurringDate: time.Time{},
+				Timestamp:     time.Time{},
+			}, {
+				ItemID:        "2222",
+				GroupID:       "group1",
+				ListItem:      "milk",
+				AddedByID:     "user",
+				Recurring:     false,
+				RecurringDate: time.Time{},
+				Timestamp:     time.Time{},
+			}, {
+				ItemID:        "3333",
+				GroupID:       "group1",
+				ListItem:      "flour",
+				AddedByID:     "user",
+				Recurring:     false,
+				RecurringDate: time.Time{},
+				Timestamp:     time.Time{},
+			}}
+	}
+
+	return items
 }
 
 func (d *DummyGroceryListDAO) GetListItem(listID, itemID string) *shared.GroceryListItem {

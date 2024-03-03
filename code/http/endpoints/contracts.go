@@ -12,6 +12,7 @@ type Endpoint interface {
 type GroceryListDAO interface {
 	GetList(listID string) *GroceryList
 	GetListItem(listID, itemID string) *shared.GroceryListItem
+	GetListItems() []*shared.GroceryListItem
 	CreateList()
 	CreateListItem(listID string, item *shared.GroceryListItem)
 	DeleteListItem(listID, itemID string)

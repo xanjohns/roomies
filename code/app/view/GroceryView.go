@@ -19,12 +19,13 @@ type GroceryView struct {
 }
 
 func NewGroceryView(mainController *util.MainController, groceryModel *model.GroceryModel) *GroceryView {
-	appsView := new(GroceryView)
-	appsView.GroceryModel = *groceryModel
-	appsView.canvasObject = container.NewVBox()
-	appsView.canvasObject.Add(appsView.NewAddButton())
-	appsView.groceryItems = map[string]fyne.CanvasObject{}
-	return appsView
+	appView := new(GroceryView)
+	appView.mainController = mainController
+	appView.GroceryModel = *groceryModel
+	appView.canvasObject = container.NewVBox()
+	appView.canvasObject.Add(appView.NewAddButton())
+	appView.groceryItems = map[string]fyne.CanvasObject{}
+	return appView
 }
 
 func (this *GroceryView) RefreshContent() {

@@ -1,6 +1,8 @@
 package util
 
 import (
+	"fmt"
+
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/app"
 	"fyne.io/fyne/v2/container"
@@ -36,6 +38,7 @@ func (this *MainController) ShowAndRun() {
 func (this *MainController) SwitchToView(roomiesView RoomiesView) {
 	if roomiesView != nil {
 		roomiesView.RefreshContent()
+		fmt.Println(roomiesView.GetViewName())
 		newContent := this.CreateBorder(roomiesView)
 		this.Window.SetContent(newContent)
 	}

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"roomies/code/app/model"
 	"roomies/code/app/util"
 	"roomies/code/app/view"
 )
@@ -10,7 +11,7 @@ func main() {
 
 	mainController.AppView = view.NewAppsView(mainController)
 	mainController.FeedView = view.NewFeedView()
-	mainController.PeopleView = view.NewPeopleView()
+	mainController.PeopleView = view.NewPeopleView(mainController, model.NewPeopleModel())
 
 
 	mainController.SwitchToView(mainController.AppView)

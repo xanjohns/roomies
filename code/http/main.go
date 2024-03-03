@@ -5,10 +5,13 @@ import (
 	"net/http"
 )
 
-func main() {
-	println("initializing router ... ")
-	router := SetupRouter()
+const address = "localhost:8081"
 
-	println("starting server ... ")
-	log.Fatal(http.ListenAndServe("localhost:8081", router))
+func main() {
+	println("Initializing router ... ")
+	router := SetupRouter()
+	println("Router initialized!")
+
+	println("Starting server ... ")
+	log.Fatal(http.ListenAndServe(address, router))
 }

@@ -50,16 +50,16 @@ func (this *GroceryView) GetViewName() string {
 	return "Grocery"
 }
 
-func (this *GroceryView) AddItem(item string) {
-	if _, exists := this.groceryItems[item]; !exists {
+func (this *GroceryView) AddItem(item model.GroceryListItem) {
+	if _, exists := this.groceryItems[item.ListItem]; !exists {
 
-		this.groceryItems[item] = widget.NewButtonWithIcon(item, theme.DeleteIcon(), func() {
-			this.canvasObject.Remove(this.groceryItems[item])
-			delete(this.groceryItems, item)
+		this.groceryItems[item.ListItem] = widget.NewButtonWithIcon(item.ListItem, theme.DeleteIcon(), func() {
+			this.canvasObject.Remove(this.groceryItems[item.ListItem])
+			delete(this.groceryItems, item.ListItem)
 			this.canvasObject.Refresh()
 		})
 
-		this.canvasObject.Add(this.groceryItems[item])
+		this.canvasObject.Add(this.groceryItems[item.ListItem])
 	}
 }
 
@@ -76,7 +76,7 @@ func (this *GroceryView) NewAddButton() fyne.CanvasObject {
 				// Callback function called when the user submits the form
 				// Here you can handle the input provided by the user
 				println("Entered string:", inputEntry.Text)
-				this.AddItem(inputEntry.Text)
+				this.AddItem(model.GroceryListItem{ListItem: inputEntry.Text})
 			},
 		}
 

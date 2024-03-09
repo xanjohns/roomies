@@ -17,6 +17,7 @@ type MainController struct {
 	AppView    RoomiesView
 	FeedView   RoomiesView
 	PeopleView RoomiesView
+	LoginView RoomiesView
 }
 
 func NewMainController() *MainController {

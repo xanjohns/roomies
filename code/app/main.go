@@ -13,6 +13,7 @@ func main() {
 	mainController.FeedView = view.NewFeedView(mainController, model.NewFeedModel())
 	mainController.PeopleView = view.NewPeopleView(mainController, model.NewPeopleModel())
 	mainController.LoginView = view.NewLoginView(mainController, model.NewLoginModel())
+	mainController.RegisterView = view.NewRegisterView(mainController, model.NewRegisterModel())
 
 
 	mainController.Window.SetContent(mainController.LoginView.GetCanvasObject())

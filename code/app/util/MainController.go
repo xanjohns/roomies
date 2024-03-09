@@ -18,6 +18,7 @@ type MainController struct {
 	FeedView   RoomiesView
 	PeopleView RoomiesView
 	LoginView RoomiesView
+	RegisterView RoomiesView
 }
 
 func NewMainController() *MainController {
@@ -64,6 +65,9 @@ func (this *MainController) CreateBorder(centerView RoomiesView) *fyne.Container
 
 	centerTabs := container.NewCenter(tabs)
 
-	return container.NewBorder(toolbar, centerTabs, nil, nil, centerView.GetCanvasObject())
+	logoutButton := widget.NewButton("Logout", func() {this.Window.SetContent(this.LoginView.GetCanvasObject())})
+	topBar := container.NewBorder(nil, nil, toolbar, logoutButton)
+
+	return container.NewBorder(topBar, centerTabs, nil, nil, centerView.GetCanvasObject())
 
 }

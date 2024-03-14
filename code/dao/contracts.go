@@ -9,3 +9,7 @@ type GroceryListDAO interface {
 	AppendListItem(listID string, item *shared.GroceryListItem)
 	DeleteListItem(listID, itemID string)
 }
+
+type LoginDAO interface {
+	ValidateLogin(username, password string) bool
+}

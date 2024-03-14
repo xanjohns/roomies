@@ -4,117 +4,77 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"roomies/code/dao"
 	"roomies/code/shared"
-	"strings"
-	"time"
 )
 
-type GroceryList struct {
+type GroceryListHandler struct {
 	responseWriter http.ResponseWriter
 	request        *http.Request
-	dao            GroceryListDAO
-	listType       string //TODO currently there doesn't seem a need to have a different handling of "shared" and "individual" list types
+	dao            dao.GroceryListDAO
 	listID         string
 	itemID         string
 	listItem       *shared.GroceryListItem
 }
 
-func NewGroceryList() *GroceryList {
-	return &GroceryList{
+func NewGroceryListHandler(listDAO dao.GroceryListDAO) *GroceryListHandler {
+	return &GroceryListHandler{
 		responseWriter: nil,
 		request:        nil,
-		dao:            nil,
-		listType:       "",
+		dao:            listDAO,
 		listID:         "",
 		itemID:         "",
 		listItem:       nil,
 	}
 }
 
-func (g *GroceryList) Handle(w http.ResponseWriter, r *http.Request) {
+func (g *GroceryListHandler) Handle(w http.ResponseWriter, r *http.Request) {
+	g.reset()
 	g.setup(w, r)
-	//defer g.reset()
+
+	var res []byte
+	var err error
 
 	switch g.request.Method {
 	case "GET":
-		//g.List()
-		items := []*shared.GroceryListItem{
-			{
-				ItemID:        "1111",
-				GroupID:       "group1",
-				ListItem:      "eggs",
-				AddedByID:     "user",
-				Recurring:     false,
-				RecurringDate: time.Time{},
-				Timestamp:     time.Time{},
-			}, {
-				ItemID:        "2222",
-				GroupID:       "group1",
-				ListItem:      "milk",
-				AddedByID:     "user",
-				Recurring:     false,
-				RecurringDate: time.Time{},
-				Timestamp:     time.Time{},
-			}, {
-				ItemID:        "3333",
-				GroupID:       "group1",
-				ListItem:      "flour",
-				AddedByID:     "user",
-				Recurring:     false,
-				RecurringDate: time.Time{},
-				Timestamp:     time.Time{},
-			}}
-
-		res, err := json.Marshal(items)
-		if err != nil {
-			fmt.Fprintf(w, "errrrrrror")
-		}
-		//fmt.Fprintf(w, "{%s, %s, %s}", items[0].ListItem, items[1].ListItem, items[2].ListItem)
-		w.Write(res)
+		res, err = json.Marshal(g.getList().GetItems())
 		break
 	case "POST":
-		g.Add()
+		g.appendItem()
 		break
 	case "DELETE":
-		g.Delete()
+		g.deleteItem()
 		break
 	}
+	if err != nil {
+		fmt.Fprintf(w, err.Error())
+	}
+	w.Write(res)
 }
 
-func (g *GroceryList) Add() {
-	g.dao.CreateListItem(g.listID, g.listItem)
+func (g *GroceryListHandler) appendItem() {
+	g.dao.AppendListItem(g.listID, g.listItem)
 }
-func (g *GroceryList) Delete() {
+func (g *GroceryListHandler) deleteItem() {
 	g.dao.DeleteListItem(g.listID, g.itemID)
 }
-func (g *GroceryList) List() {
-	g.dao.GetList(g.listID)
-	g.dao.GetListItems()
-
-}
-func (g *GroceryList) GetAll() {
-	return
-}
-func (g *GroceryList) Retrieve() {
-	g.dao.GetListItem(g.listID, g.itemID)
+func (g *GroceryListHandler) getList() *shared.GroceryList {
+	return g.dao.GetList(g.listID)
 }
 
-func (g *GroceryList) reset() {
+func (g *GroceryListHandler) reset() {
 	g.request = nil
 	g.responseWriter = nil
-	g.listType = ""
 	g.listID = ""
 	g.itemID = ""
 }
 
-func (g *GroceryList) setup(w http.ResponseWriter, r *http.Request) {
+func (g *GroceryListHandler) setup(w http.ResponseWriter, r *http.Request) {
 	g.responseWriter = w
 	g.request = r
-	g.listItem = shared.GetNewGroceryListItem("", "", false, time.Time{})
-	splitURI := strings.Split(r.RequestURI, "/")
-	g.listType = splitURI[2]
-	g.listID = splitURI[3]
-	//if len(splitURI) > 3 {
-	//	g.itemID = splitURI[4]
-	//}
+	if r.Body != nil {
+		json.NewDecoder(r.Body).Decode(g.listItem)
+	}
+	g.listID = r.URL.Query().Get("listId")
+	g.itemID = r.URL.Query().Get("itemId")
 }

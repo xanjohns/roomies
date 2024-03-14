@@ -21,8 +21,11 @@ func (g *GroceryList) GetItems() []*GroceryListItem {
 	return g.items
 }
 
-func GetNewGroceryList() *GroceryList {
-	return &GroceryList{items: make([]*GroceryListItem, 0)}
+func GetNewGroceryList(items []*GroceryListItem) *GroceryList {
+	if items == nil {
+		items = make([]*GroceryListItem, 0)
+	}
+	return &GroceryList{items: items}
 }
 
 type GroceryListItem struct {

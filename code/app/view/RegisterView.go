@@ -1,47 +1,59 @@
 package view
 
 import (
+	"errors"
+	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/container"
+	"fyne.io/fyne/v2/widget"
 	"roomies/code/app/model"
 	"roomies/code/app/util"
-
-	"fyne.io/fyne/v2"
-	"fyne.io/fyne/v2/widget"
 )
 
 type RegisterView struct {
 	canvasObject   fyne.CanvasObject
 	container      *fyne.Container
 	mainController *util.MainController
-	RegisterModel     model.RegisterModel
+	RegisterModel  model.RegisterModel
 }
 
-func NewRegisterView(mainController *util.MainController, loginModel *model.RegisterModel) *RegisterView {
-	appView := new(RegisterView)
-	appView.mainController = mainController
-	appView.RegisterModel = *loginModel
+func NewRegisterView(mainController *util.MainController, registerModel *model.RegisterModel) *RegisterView {
+	appView := &RegisterView{
+		mainController: mainController,
+		RegisterModel:  *registerModel,
+	}
 	fillerWidget := widget.NewCard("", "", nil)
 	registerButton := widget.NewButton("Login", func() { mainController.Window.SetContent(mainController.LoginView.GetCanvasObject()) })
 	appView.canvasObject = container.NewBorder(fillerWidget, registerButton, nil, nil, appView.NewRegisterForm())
 	return appView
 }
 
-func (this *RegisterView) RefreshContent() {
+func (r *RegisterView) RefreshContent() {}
 
+func (r *RegisterView) GetCanvasObject() fyne.CanvasObject {
+	return r.canvasObject
 }
 
-func (this *RegisterView) GetCanvasObject() fyne.CanvasObject {
-	return this.canvasObject
-}
-
-func (this *RegisterView) GetViewName() string {
+func (r *RegisterView) GetViewName() string {
 	return "Register"
 }
 
-func (this *RegisterView) NewRegisterForm() *widget.Form {
+func (r *RegisterView) NewRegisterForm() *widget.Form {
 	userNameEntry := widget.NewEntry()
 	groupIDEntry := widget.NewEntry()
 	passwordEntry := widget.NewPasswordEntry()
+
+	// Create a validation function for required fields
+	requiredValidator := func(text string) error {
+		if text == "" {
+			return errors.New("This field is required")
+		}
+		return nil
+	}
+
+	// Apply validation to entry fields
+	userNameEntry.Validator = requiredValidator
+	groupIDEntry.Validator = requiredValidator
+	passwordEntry.Validator = requiredValidator
 
 	newForm := &widget.Form{
 		Items: []*widget.FormItem{
@@ -50,7 +62,7 @@ func (this *RegisterView) NewRegisterForm() *widget.Form {
 			{Text: "GroupID: ", Widget: groupIDEntry},
 		},
 		OnSubmit: func() {
-			this.mainController.SwitchToView(this.mainController.AppView)
+			r.mainController.SwitchToView(r.mainController.AppView)
 		},
 	}
 

@@ -21,6 +21,7 @@ func NewAppsView(mainController *util.MainController) *AppsView {
 	appsView.AddApp(NewGroceryView(mainController, model.NewGroceryModel()))
 	appsView.AddApp(NewAnnouncementsView(mainController, model.NewAnnouncementsModel()))
 	appsView.AddApp(NewServiceRequestView(mainController, model.NewServiceRequestModel()))
+	appsView.AddApp(NewPaymentView(mainController, model.NewPaymentModel()))
 	appsView.mainController = mainController
 	return appsView
 }
@@ -39,5 +40,5 @@ func (this *AppsView) GetViewName() string {
 
 func (this *AppsView) AddApp(newApp util.RoomiesView) {
 	this.appViews = append(this.appViews, newApp)
-	this.canvasObject.Add(widget.NewButton(newApp.GetViewName(), func() {this.mainController.SwitchToView((newApp))}))
+	this.canvasObject.Add(widget.NewButton(newApp.GetViewName(), func() { this.mainController.SwitchToView((newApp)) }))
 }

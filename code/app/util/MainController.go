@@ -11,14 +11,15 @@ import (
 )
 
 type MainController struct {
-	Content    *fyne.Container
-	Window     fyne.Window
-	App        fyne.App
-	AppView    RoomiesView
-	FeedView   RoomiesView
-	PeopleView RoomiesView
-	LoginView RoomiesView
+	Content      *fyne.Container
+	Window       fyne.Window
+	App          fyne.App
+	AppView      RoomiesView
+	FeedView     RoomiesView
+	PeopleView   RoomiesView
+	LoginView    RoomiesView
 	RegisterView RoomiesView
+	PaymentView  RoomiesView
 }
 
 func NewMainController() *MainController {
@@ -48,7 +49,7 @@ func (this *MainController) SwitchToView(roomiesView RoomiesView) {
 
 func (this *MainController) CreateBorder(centerView RoomiesView) *fyne.Container {
 	toolbar := widget.NewToolbar(
-		widget.NewToolbarAction(theme.ViewRefreshIcon(), func() {centerView.RefreshContent()}),
+		widget.NewToolbarAction(theme.ViewRefreshIcon(), func() { centerView.RefreshContent() }),
 	)
 
 	tabs := container.NewHBox(
@@ -65,7 +66,7 @@ func (this *MainController) CreateBorder(centerView RoomiesView) *fyne.Container
 
 	centerTabs := container.NewCenter(tabs)
 
-	logoutButton := widget.NewButton("Logout", func() {this.Window.SetContent(this.LoginView.GetCanvasObject())})
+	logoutButton := widget.NewButton("Logout", func() { this.Window.SetContent(this.LoginView.GetCanvasObject()) })
 	topBar := container.NewBorder(nil, nil, toolbar, logoutButton)
 
 	return container.NewBorder(topBar, centerTabs, nil, nil, centerView.GetCanvasObject())

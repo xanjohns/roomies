@@ -8,13 +8,13 @@ import (
 )
 
 type LoginHandler struct {
-	responseWriter http.ResponseWriter
-	request        *http.Request
-	dao            dao.LoginDAO
+	dao dao.LoginDAO
 }
 
-func NewLoginHandler(listDAO dao.GroceryListDAO) *LoginHandler {
-	return nil
+func NewLoginHandler(loginDao dao.LoginDAO) *LoginHandler {
+	return &LoginHandler{
+		dao: loginDao,
+	}
 }
 
 func (l *LoginHandler) Handle(w http.ResponseWriter, r *http.Request) {

@@ -13,3 +13,7 @@ type GroceryListDAO interface {
 type LoginDAO interface {
 	ValidateLogin(username, password string) bool
 }
+
+type AnnouncementsDAO interface {
+	GetAnnouncements() []*shared.Announcement
+}

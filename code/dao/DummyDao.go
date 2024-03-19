@@ -6,6 +6,51 @@ import (
 	"time"
 )
 
+type DummyAnnouncementsDAO struct {
+
+} 
+
+func (d *DummyAnnouncementsDAO) GetAnnouncements() []*shared.Announcement {
+	return []*shared.Announcement{
+		&shared.Announcement{
+			ItemID: "1",
+			AddedByID: "admin",
+			AnnouncementText: "Come to our Christmas Party!",
+			Timestamp: time.Now(),
+		},
+		&shared.Announcement{
+			ItemID: "2",
+			AddedByID: "admin",
+			AnnouncementText: "Cleaning checks are next week.",
+			Timestamp: time.Now(),
+		},
+		&shared.Announcement{
+			ItemID: "3",
+			AddedByID: "admin",
+			AnnouncementText: "If you are moving out. . .",
+			Timestamp: time.Now(),
+		},
+		&shared.Announcement{
+			ItemID: "4",
+			AddedByID: "admin",
+			AnnouncementText: "Please look out for . . .",
+			Timestamp: time.Now(),
+		},
+		&shared.Announcement{
+			ItemID: "5",
+			AddedByID: "admin",
+			AnnouncementText: "Don't forget to. . .",
+			Timestamp: time.Now(),
+		},
+		&shared.Announcement{
+			ItemID: "6",
+			AddedByID: "admin",
+			AnnouncementText: "Temporary internet outage will occure tomorrow.",
+			Timestamp: time.Now(),
+		},
+	}
+}
+
 type DummyGroceryListDAO struct {
 	GroceryListDAO
 	dummyList *shared.GroceryList

@@ -17,5 +17,6 @@ func (h HttpHandler) ServeHTTP(response http.ResponseWriter, request *http.Reque
 func SetupRouter() http.Handler {
 	router := http.NewServeMux()
 	router.Handle("/grocery-list", HttpHandler{endpoint: endpoints.NewGroceryListHandler(dao.GetNewDummyGroceryListDAO())})
+	router.Handle("/announcements", HttpHandler{endpoint: endpoints.NewAnnouncementsHandler(dao.GetNewDummyAnnouncementsDAO())})
 	return router
 }

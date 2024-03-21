@@ -2,9 +2,13 @@ module roomies
 
 go 1.21.6
 
-require fyne.io/fyne/v2 v2.4.3
+require (
+	fyne.io/fyne/v2 v2.4.3
+	github.com/go-sql-driver/mysql v1.8.0
+)
 
 require (
+	filippo.io/edwards25519 v1.1.0 // indirect
 	fyne.io/systray v1.10.1-0.20231115130155-104f5ef7839e // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/fredbi/uri v1.0.0 // indirect

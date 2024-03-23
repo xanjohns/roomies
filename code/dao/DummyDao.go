@@ -7,11 +7,12 @@ import (
 )
 
 type DummyAnnouncementsDAO struct {
+	dummyList []*shared.Announcement
 
 } 
 
-func (d *DummyAnnouncementsDAO) GetAnnouncements() []*shared.Announcement {
-	return []*shared.Announcement{
+func GetNewDummyAnnouncementsDAO() *DummyAnnouncementsDAO {
+	l := []*shared.Announcement{
 		&shared.Announcement{
 			ItemID: "1",
 			AddedByID: "admin",
@@ -49,7 +50,17 @@ func (d *DummyAnnouncementsDAO) GetAnnouncements() []*shared.Announcement {
 			Timestamp: time.Now(),
 		},
 	}
+
+	return &DummyAnnouncementsDAO{
+		dummyList: l,
+	}
 }
+
+func (d *DummyAnnouncementsDAO) GetAnnouncements() []*shared.Announcement {
+	return d.dummyList
+}
+
+
 
 type DummyGroceryListDAO struct {
 	GroceryListDAO

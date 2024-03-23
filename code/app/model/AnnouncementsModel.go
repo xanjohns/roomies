@@ -1,5 +1,11 @@
 package model
 
+import "roomies/code/shared"
+import "net/http"
+import "log"
+import "io"
+import "encoding/json"
+
 
 type AnnouncementsModel struct {
 
@@ -15,26 +21,28 @@ func NewAnnouncementsModel() *AnnouncementsModel {
 	return new(AnnouncementsModel)
 }
 
-func (this *AnnouncementsModel) GetItemsHTTP() []Announcement {
+func (this *AnnouncementsModel) GetItemsHTTP() []shared.Announcement {
 
-	// Mock data
-	announcements := []Announcement {
-		Announcement{
-			Date: "Jan 21",
-			Message: "Reminder about the free concert tonight!",
-			From: "Admin",
-		},
-		Announcement{
-			Date: "Feb 01",
-			Message: "Enter our giveaway to win prizes!",
-			From: "Admin",
-		},
-		Announcement{
-			Date: "Mar 29",
-			Message: "Rent is due soon.",
-			From: "Admin",
-		},
+	response, err := http.Get("http://localhost:8081/announcements")
+	if err != nil {
+		log.Println(err)
+		return nil
 	}
+	data, _ := io.ReadAll(response.Body)
 
-	return announcements
+	var items []shared.Announcement
+	if err := json.Unmarshal(data, &items); err != nil {
+		log.Println(err)
+	}
+	log.Println(items)
+
+	// Dummy data
+
+	// items := []string {
+	// 	"Eggs",
+	// 	"Milk",
+	// 	"Flour",
+	// }
+
+	return items
 }

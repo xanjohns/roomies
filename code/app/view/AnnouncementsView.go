@@ -3,6 +3,7 @@ package view
 import (
 	"roomies/code/app/model"
 	"roomies/code/app/util"
+	"roomies/code/shared"
 
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/container"
@@ -43,8 +44,8 @@ func (this *AnnouncementsView) GetViewName() string {
 	return "Announcements"
 }
 
-func (this *AnnouncementsView) AddItem(item model.Announcement) {
-	newCard := widget.NewCard(item.Message, (item.Date + " -- " + item.From), nil)
+func (this *AnnouncementsView) AddItem(item shared.Announcement) {
+	newCard := widget.NewCard(item.AnnouncementText, (item.Timestamp.String() + " -- " + item.AddedByID), nil)
 
 	this.canvasObject.Add(newCard)
 }

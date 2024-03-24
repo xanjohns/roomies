@@ -6,48 +6,58 @@ import (
 	"time"
 )
 
+type DummyLoginDAO struct {
+}
+
+func (this *DummyLoginDAO) ValidateLogin(username, password string) bool {
+	return true
+}
+
+func GetNewDummyLoginDAO() *DummyLoginDAO {
+	return &DummyLoginDAO{}
+}
+
 type DummyAnnouncementsDAO struct {
 	dummyList []*shared.Announcement
-
-} 
+}
 
 func GetNewDummyAnnouncementsDAO() *DummyAnnouncementsDAO {
 	l := []*shared.Announcement{
 		&shared.Announcement{
-			ItemID: "1",
-			AddedByID: "admin",
+			ItemID:           "1",
+			AddedByID:        "admin",
 			AnnouncementText: "Come to our Christmas Party!",
-			Timestamp: time.Now(),
+			Timestamp:        time.Now(),
 		},
 		&shared.Announcement{
-			ItemID: "2",
-			AddedByID: "admin",
+			ItemID:           "2",
+			AddedByID:        "admin",
 			AnnouncementText: "Cleaning checks are next week.",
-			Timestamp: time.Now(),
+			Timestamp:        time.Now(),
 		},
 		&shared.Announcement{
-			ItemID: "3",
-			AddedByID: "admin",
+			ItemID:           "3",
+			AddedByID:        "admin",
 			AnnouncementText: "If you are moving out. . .",
-			Timestamp: time.Now(),
+			Timestamp:        time.Now(),
 		},
 		&shared.Announcement{
-			ItemID: "4",
-			AddedByID: "admin",
+			ItemID:           "4",
+			AddedByID:        "admin",
 			AnnouncementText: "Please look out for . . .",
-			Timestamp: time.Now(),
+			Timestamp:        time.Now(),
 		},
 		&shared.Announcement{
-			ItemID: "5",
-			AddedByID: "admin",
+			ItemID:           "5",
+			AddedByID:        "admin",
 			AnnouncementText: "Don't forget to. . .",
-			Timestamp: time.Now(),
+			Timestamp:        time.Now(),
 		},
 		&shared.Announcement{
-			ItemID: "6",
-			AddedByID: "admin",
+			ItemID:           "6",
+			AddedByID:        "admin",
 			AnnouncementText: "Temporary internet outage will occure tomorrow.",
-			Timestamp: time.Now(),
+			Timestamp:        time.Now(),
 		},
 	}
 
@@ -59,8 +69,6 @@ func GetNewDummyAnnouncementsDAO() *DummyAnnouncementsDAO {
 func (d *DummyAnnouncementsDAO) GetAnnouncements() []*shared.Announcement {
 	return d.dummyList
 }
-
-
 
 type DummyGroceryListDAO struct {
 	GroceryListDAO

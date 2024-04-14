@@ -15,8 +15,8 @@ func (c *Connector) Initialize(file *ConfigFile) {
 }
 
 type Query struct {
-	db    string
-	query string
+	Db    string
+	Query string
 }
 
 func (c *Connector) QueryDB(query Query) {

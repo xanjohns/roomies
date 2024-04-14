@@ -29,6 +29,7 @@ func GetNewGroceryList(items []*GroceryListItem) *GroceryList {
 }
 
 type GroceryListItem struct {
+	ListID        string
 	ItemID        string
 	GroupID       string
 	ListItem      string
